@@ -18,7 +18,7 @@ def homepage():      #Passando para a função da rota principal o formulário d
         usuario = Usuario.query.filter_by(email=formulario_login.email.data).first()
         # Verificando se a senha do usuário está certa ou não.
         # São passados 2 argumentos, pega a senha verdadeira e compara com a senha que se encontra dentro do campo de senha do formulário, caso seja verdeira, permite o login.
-        if usuario and bcrypt.check_password_hash(usuario.senha, formulario_login.senha.data):
+        if usuario and bcrypt.check_password_hash(usuario.senha.encode("utf-8"), formulario_login.senha.data):
             login_user(usuario)
             return redirect(url_for("perfil", id_usuario=usuario.id))
     return render_template("homepage.html", form=formulario_login)
@@ -32,7 +32,7 @@ def criarconta():      #Passando para a rota de criar conta, o formulário de cr
     if formulario_criarconta.validate_on_submit():
         #A variável "senha" Está recebendo com valor uma criptografia de senha ou seja, se o usuario der submit no formulário, sua senha vai ser criptografada
         #Outra funcionalidade poderia ser "bcrypt.check_password_hash()", Essa função consegue verificar se a senha criptografada é realmente a senha do usuário.
-        senha = bcrypt.generate_password_hash(formulario_criarconta.senha.data)
+        senha = bcrypt.generate_password_hash(formulario_criarconta.senha.data).decode("utf-8")
         usuario = Usuario(username=formulario_criarconta.username.data,
                           email= formulario_criarconta.email.data , senha= senha )
 
