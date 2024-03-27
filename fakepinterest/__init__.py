@@ -5,10 +5,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 #A Bcrypt em específico faz a criptografia do login
 from flask_bcrypt import Bcrypt
+import os
 
 app = Flask(__name__)
 #Cria um database de acordo com o valor passado, nesse caso foi criado um database "sqlite".
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///comunidade.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 #Chave de segurança que vai garantir a integridade do app
 app.config["SECRET_KEY"] = "87825fbf71cf983a6991c2b12818c6d6"
 #Definindo que sempre que uma que o usuário fizer o upload de uma foto, ele vai armazenar na pasta definida abaixo.
