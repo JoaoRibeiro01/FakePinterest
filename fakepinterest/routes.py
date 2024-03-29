@@ -6,6 +6,7 @@ from flask_login import login_required, login_user, logout_user, current_user
 from fakepinterest.forms import FormLogin, FormCriarConta, FormFoto
 from fakepinterest.models import Usuario, Post
 import os
+from wtforms.validators import ValidationError
 #Importação para deixar o nome de um arquivo seguro
 from werkzeug.utils import secure_filename
 
@@ -21,6 +22,9 @@ def homepage():      #Passando para a função da rota principal o formulário d
         if usuario and bcrypt.check_password_hash(usuario.senha.encode("utf-8"), formulario_login.senha.data):
             login_user(usuario)
             return redirect(url_for("perfil", id_usuario=usuario.id))
+        if not bcrypt.check_password_hash(usuario.senha.encode("utf-8"), formulario_login.senha.data):
+            raise ValidationError("Usuário ou senha inválidos")
+
     return render_template("homepage.html", form=formulario_login)
     #form.csrf_token - Trava de segurança contra ataques cibernéticos. - Garante que o formulário vai ser sempre validado antes de enviar qualquer informação ao banco de dados.
     #form.nome_do_campo.label() Poe o nome do titulo do campo no próprio campo
