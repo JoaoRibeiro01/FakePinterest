@@ -25,7 +25,7 @@ class FormLogin(FlaskForm):
             raise ValidationError("Usuário não encontrado, crie uma conta.")
 
     def validate_senha(self, senha, email):
-        usuario = Usuario.query.filter_by(email=email.data, senha=senha.data)
+        usuario = Usuario.query.filter_by(email=email.data, senha=senha.data).firt()
         if not usuario:
             raise ValidationError("Usuário ou senha inválidos")
 
