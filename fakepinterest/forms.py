@@ -27,7 +27,7 @@ class FormLogin(FlaskForm):
     def validata_senha(self, senha):
         usuario = Usuario.query.filter_by(email=email.data).first()
         senha = senha.data
-        if usuario.senha.encode("utf-8") != senha:
+        if not senha == usuario.senha.encode("utf-8"):
             raise ValidationError("Usuário ou senha inválidos")
 
 class FormCriarConta(FlaskForm):
